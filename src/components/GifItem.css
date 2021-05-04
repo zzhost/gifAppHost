@@ -1,0 +1,9 @@
+.gif-item {
+  display: flex !important;
+  align-items: center !important;
+  cursor: pointer;
+}
+
+.gif-item.item img {
+  max-width: 180px;
+}

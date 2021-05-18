@@ -1,58 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
-import giphy from "./apis/giphy";
 import GifList from "./GifList";
 import GifDetail from "./GifDetail";
+import useGifs from "./hooks/useGifs";
 
-class App extends React.Component {
-  state = { gifs: [], selectedGif: null };
+const App = () => {
+  const [gifs, search] = useGifs("welcome");
+  const [selectedGif, setSelectedGif] = useState(null);
 
-  componentDidMount() {
-    this.onTermSubmit("welcome");
-  }
+  useEffect(() => {
+    setSelectedGif(gifs[0]);
+  }, [gifs]);
 
-  onTermSubmit = async (term) => {
-    try {
-      const response = await giphy.get("/search", {
-        params: {
-          q: term,
-        },
-      });
-
-      this.setState({
-        gifs: response.data.data,
-        selectedGif: response.data.data[0],
-      });
-    } catch (err) {
-      console.error("Error response");
-      //console.log(err.response.data);
-      //console.log(err.response.status);
-      //console.log(err.response.headers);
-      console.log(err);
-    }
-  };
-
-  onGifSelect = (gif) => {
-    this.setState({ selectedGif: gif });
-  };
-
-  render() {
-    return (
-      <div className="ui container">
-        <SearchBar onTermSubmit={this.onTermSubmit} />
-        <div className="ui stackable grid">
-          <div className="ui row">
-            <div className="ui eleven wide column">
-              <GifDetail gif={this.state.selectedGif} />
-            </div>
-            <div className="ui five wide column">
-              <GifList gifs={this.state.gifs} onGifSelect={this.onGifSelect} />
-            </div>
+  return (
+    <div className="ui container">
+      <SearchBar onTermSubmit={search} />
+      <div className="ui stackable grid">
+        <div className="ui row">
+          <div className="ui eleven wide column">
+            <GifDetail gif={selectedGif} />
+          </div>
+          <div className="ui five wide column">
+            <GifList gifs={gifs} onGifSelect={setSelectedGif} />
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;

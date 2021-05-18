@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const KEY = "YOUR_PUBLIC_API_KEY_STORED_IN_USER_BROWSER";
+const KEY = "iqACHRzsD9VjuzLVduPKLshxOAHUEbGE";
 
 export default axios.create({
   baseURL: "https://api.giphy.com/v1/gifs",
